@@ -1,4 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
+import { ToastAndroid } from 'react-native';
 import ContactUsForm from '../../components/ContactUsForm';
 import { State } from '../../redux/reducers';
 import {
@@ -8,6 +9,7 @@ import {
   setContactFormErrors,
 } from '../../redux/actions/contactUs';
 import { validateContactUsForm } from './validation';
+import { sendEmail } from '../../services/sendgrid';
 
 export default function ContactUs() {
   const contactUsFormState = useSelector(
@@ -24,16 +26,31 @@ export default function ContactUs() {
     dispatch(setContactFormData(formData));
   };
 
-  const handlePressOnSubmitButton = () => {
-    console.log({ contactUsFormState });
+  const handlePressOnSubmitButton = async () => {
     const validationRes = validateContactUsForm(contactUsFormState);
+
     if (Object.keys(validationRes).length) {
       dispatch(setContactFormErrors(validationRes));
     } else {
-      dispatch(resetContactFormErrors());
-      dispatch(resetContactFormData());
+      try {
+        const mailRes = await sendEmail(
+          contactUsFormState.name,
+          contactUsFormState.phone,
+          contactUsFormState.email,
+          contactUsFormState.message
+        );
+
+        if (mailRes) {
+          dispatch(resetContactFormData());
+          dispatch(resetContactFormErrors());
+        }
+      } catch (error) {
+        ToastAndroid.show(
+          'Failed to send mail, Please try again in sometime',
+          2000
+        );
+      }
     }
-    console.log({ contactUsFormState });
   };
 
   return (
