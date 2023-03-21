@@ -1,35 +1,30 @@
-import {
-  KeyboardTypeOptions,
-  NativeSyntheticEvent,
-  StyleSheet,
-  TextInput,
-  TextInputChangeEventData,
-} from 'react-native';
+import { KeyboardTypeOptions, StyleSheet, TextInput } from 'react-native';
 import { colors } from '../../constants/colors';
 
 interface InputProps {
   placeholder: string;
+  value: string;
   keyboardType?: KeyboardTypeOptions;
   numberOfLines?: number;
   multiline?: boolean;
-  onChange?:
-    | ((e: NativeSyntheticEvent<TextInputChangeEventData>) => void)
-    | undefined;
+  onChangeText?: ((text: string) => void) | undefined;
 }
 
 export default function Input({
   placeholder,
   keyboardType = 'default',
-  onChange,
+  onChangeText,
   multiline,
   numberOfLines,
+  value,
 }: InputProps) {
   return (
     <TextInput
       style={[styles.input, multiline && styles.textarea]}
+      value={value}
       placeholder={placeholder}
       keyboardType={keyboardType}
-      onChange={onChange}
+      onChangeText={onChangeText}
       selectionColor={colors.black}
       multiline={multiline}
       numberOfLines={numberOfLines}

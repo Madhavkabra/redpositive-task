@@ -1,8 +1,30 @@
-import { StyleSheet, Text, View, Button } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  GestureResponderEvent,
+} from 'react-native';
 import Input from '../Input';
 import { colors } from '../../constants/colors';
 
-export default function ContactUsForm() {
+interface ContactUsFormProps {
+  name: string;
+  phone: string;
+  email: string;
+  message: string;
+  onChangeText: (inputName: string, value: string) => void;
+  onPressSubmitButton?: ((event: GestureResponderEvent) => void) | undefined;
+}
+
+export default function ContactUsForm({
+  name,
+  phone,
+  email,
+  message,
+  onChangeText,
+  onPressSubmitButton,
+}: ContactUsFormProps) {
   return (
     <View style={styles.container}>
       <Text style={styles.contactUsText}>Contact Us</Text>
@@ -11,24 +33,35 @@ export default function ContactUsForm() {
       </Text>
 
       <View style={styles.formContainer}>
-        <Input placeholder='Name' />
+        <Input
+          placeholder='Name'
+          value={name}
+          onChangeText={(value) => onChangeText('name', value)}
+        />
         <Input
           placeholder='Mobile Number'
+          value={phone}
           keyboardType='phone-pad'
+          onChangeText={(value) => onChangeText('phone', value)}
         />
         <Input
           placeholder='Email'
+          value={email}
           keyboardType='email-address'
+          onChangeText={(value) => onChangeText('email', value)}
         />
         <Input
           placeholder='Type a message...'
+          value={message}
           multiline
           numberOfLines={10}
+          onChangeText={(value) => onChangeText('message', value)}
         />
 
         <Button
           title='Submit'
           color={colors.backgroundPrimary}
+          onPress={onPressSubmitButton}
         />
       </View>
     </View>
