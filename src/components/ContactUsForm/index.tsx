@@ -7,12 +7,14 @@ import {
 } from 'react-native';
 import Input from '../Input';
 import { colors } from '../../constants/colors';
+import { ContactUsFormErrors } from '../../redux/interfaces/contactUs';
 
 interface ContactUsFormProps {
   name: string;
   phone: string;
   email: string;
   message: string;
+  errors?: ContactUsFormErrors;
   onChangeText: (inputName: string, value: string) => void;
   onPressSubmitButton?: ((event: GestureResponderEvent) => void) | undefined;
 }
@@ -22,6 +24,7 @@ export default function ContactUsForm({
   phone,
   email,
   message,
+  errors,
   onChangeText,
   onPressSubmitButton,
 }: ContactUsFormProps) {
@@ -36,18 +39,21 @@ export default function ContactUsForm({
         <Input
           placeholder='Name'
           value={name}
+          error={errors?.name}
           onChangeText={(value) => onChangeText('name', value)}
         />
         <Input
           placeholder='Mobile Number'
           value={phone}
           keyboardType='phone-pad'
+          error={errors?.phone}
           onChangeText={(value) => onChangeText('phone', value)}
         />
         <Input
           placeholder='Email'
           value={email}
           keyboardType='email-address'
+          error={errors?.email}
           onChangeText={(value) => onChangeText('email', value)}
         />
         <Input

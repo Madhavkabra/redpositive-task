@@ -3,8 +3,11 @@ import ContactUsForm from '../../components/ContactUsForm';
 import { State } from '../../redux/reducers';
 import {
   resetContactFormData,
+  resetContactFormErrors,
   setContactFormData,
+  setContactFormErrors,
 } from '../../redux/actions/contactUs';
+import { validateContactUsForm } from './validation';
 
 export default function ContactUs() {
   const contactUsFormState = useSelector(
@@ -23,7 +26,13 @@ export default function ContactUs() {
 
   const handlePressOnSubmitButton = () => {
     console.log({ contactUsFormState });
-    dispatch(resetContactFormData());
+    const validationRes = validateContactUsForm(contactUsFormState);
+    if (Object.keys(validationRes).length) {
+      dispatch(setContactFormErrors(validationRes));
+    } else {
+      dispatch(resetContactFormErrors());
+      dispatch(resetContactFormData());
+    }
     console.log({ contactUsFormState });
   };
 
@@ -33,6 +42,7 @@ export default function ContactUs() {
       message={contactUsFormState.message}
       name={contactUsFormState.name}
       phone={contactUsFormState.phone}
+      errors={contactUsFormState.errors}
       onChangeText={handleChangeText}
       onPressSubmitButton={handlePressOnSubmitButton}
     />
