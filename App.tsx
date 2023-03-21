@@ -1,6 +1,6 @@
 import { StyleSheet, View, StatusBar } from 'react-native';
-import ContactUs from './pages/ContactUs';
-import { colors } from './constants/colors';
+import ContactUs from './src/pages/ContactUs';
+import { colors } from './src/constants/colors';
 
 export default function App() {
   return (
