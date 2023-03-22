@@ -9,7 +9,7 @@ import {
   setContactFormErrors,
 } from '../../redux/actions/contactUs';
 import { validateContactUsForm } from './validation';
-import { sendEmail } from '../../services/sendgrid';
+import { sendEmail } from '../../services/sendEmail';
 
 export default function ContactUs() {
   const contactUsFormState = useSelector(
@@ -33,6 +33,8 @@ export default function ContactUs() {
       dispatch(setContactFormErrors(validationRes));
     } else {
       try {
+        dispatch(resetContactFormErrors());
+
         const mailRes = await sendEmail(
           contactUsFormState.name,
           contactUsFormState.phone,
@@ -42,7 +44,6 @@ export default function ContactUs() {
 
         if (mailRes) {
           dispatch(resetContactFormData());
-          dispatch(resetContactFormErrors());
         }
       } catch (error) {
         ToastAndroid.show(
