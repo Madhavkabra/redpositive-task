@@ -15,9 +15,13 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.redpositivetask.test",
+      "buildNumber": "1.0.0"
     },
     "android": {
+      "package": "com.redpositivetask.test",
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -25,6 +29,14 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "19e626d2-e0e7-4910-8005-64bea2099faf"
+      }
+    },
+    "plugins": [
+      "./android-manifest.plugin.js"
+    ]
   }
 }
